@@ -8,6 +8,7 @@
           <input type="text" v-model="message">
           <button type="button" class="btn btn-primary" @click="sendMessage">submit</button>
       </div>
+      <p>{{ chats }}</p>
   </div>
 </template>
 
@@ -19,19 +20,30 @@ export default {
     return {
       message: '',
       logs: [],
-      status: 'disconnected'
+      status: 'disconnected',
+      chats: [],
     }
   },
   methods: {
     connect() {
-        this.socket = new WebSocket("ws://127.0.0.1:8000/ws/chat/test/")
+        this.socket = new WebSocket("ws://127.0.0.1:8000/ws/chat/asdf/")
         this.socket.onopen = () => {
+            // this.logs.push({
+                //     event: 'connect',
+            //     data: 'test'
+            // })
+            this.socket.send(JSON.stringify({
+                action: 'enter',
+                username: 'change',
+            }))
             this.status = 'connected'
-            this.logs.push({
-                event: 'connect',
-                data: 'test'
-            })
-            this.socket.onmessage
+            // this.socket.onmessage
+            this.socket.onmessage = (event)=>{
+                console.log(event.data)
+                this.chats.push(JSON.parse(event.data))
+                console.log(this.chats)
+                // chatLog.value += `${message}\n` 
+            }
         }
     },
     disconnect() {
@@ -39,14 +51,17 @@ export default {
         this.status = 'disconnected'
     },
     sendMessage() {
-        const context = JSON.stringify({
-            message: this.message,
+        // const context = JSON.stringify({
+        //     action: 'message',
+        //     message: this.message,
+        //     username: 'change',
+        // })
+        // console.log(context)
+        this.socket.send(JSON.stringify({
             action: 'message',
+            message: this.message,
             username: 'change',
-        })
-        console.log(context)
-        this.socket.send(context)
-        this.socket.send('context')
+        }))
         this.message = ''
     }
   },
