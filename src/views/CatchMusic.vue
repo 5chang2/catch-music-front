@@ -1,5 +1,6 @@
 <template>
   <div class="catch-music">
+    <!-- <iframe :src="videoUrl" frameborder="0" class="iframe"></iframe> -->
     <iframe :src="videoUrl" frameborder="0" class="iframe" :class="{ none: !iframeBool, block: iframeBool}"></iframe>
 
     <div>
@@ -58,7 +59,7 @@ export default {
       this.user.username = this.userNameInput
     },
     connect() {
-        this.socket = new WebSocket("ws://127.0.0.1:8000/ws/chat/11/")
+        this.socket = new WebSocket("ws://127.0.0.1:8000/ws/chat/1/")
         this.socket.onopen = () => {
             // 닉네임 입력하여 입장
             this.socket.send(JSON.stringify({
@@ -73,6 +74,9 @@ export default {
                 if (JSON.parse(event.data).action == 'message') {
                   this.chat.author = JSON.parse(event.data).author
                   this.chat.message = JSON.parse(event.data).message
+                  if(this.nowMusic.title == JSON.parse(event.data).message) {
+                    alert('정답!!')
+                  }
                   this.chat.time = new Date()
                   this.chats.unshift(this.chat)
                   this.chat = {}
@@ -82,7 +86,7 @@ export default {
                   // console.log(JSON.parse(event.data))
                 }
                 else if (JSON.parse(event.data).action == 'music') {
-                  // console.log(JSON.parse(event.data))
+                  console.log(JSON.parse(event.data))
                   this.nowMusic = JSON.parse(event.data).music
                 
                   // this.youtubeURL = 
@@ -107,6 +111,9 @@ export default {
       this.message = ''
     },
     getRandomMusic() {
+      // console.log('random')
+      this.nowMusic = {}
+      // this.iframeBool = true
       this.socket.send(JSON.stringify({
           action: 'music'
       }))

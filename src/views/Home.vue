@@ -3,7 +3,8 @@
     <h1>CatchMusic</h1>
     <button type="button" class="btn btn-primary" @click="getRandomMusic">Random</button>
     <hr>
-    <iframe :src="videoUrl" frameborder="0" class="iframe" :class="{ none: !iframeBool, block: iframeBool}"></iframe>
+    <!-- <iframe :src="videoUrl" frameborder="0" class="iframe" :class="{ none: !iframeBool, block: iframeBool}"></iframe> -->
+    <iframe :src="videoUrl" frameborder="0" class="iframe"></iframe>
   </div>
 </template>
 
