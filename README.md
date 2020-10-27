@@ -1,4 +1,4 @@
-# catch_music_front
+# catch-music
 
 ## Project setup
 ```
