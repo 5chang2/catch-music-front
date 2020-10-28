@@ -25,7 +25,8 @@ export default {
   methods: {
     getRandomMusic: function () {
       this.iframeBool = true
-      axios.get('http://127.0.0.1:8000/musics/random/')
+      // axios.get('http://127.0.0.1:8000/musics/random/')
+      axios.get('https://38a82ecdcd39.ngrok.io/musics/random/')
         .then(res => {
           console.log(res.data.youtube_url)
           this.videoId = res.data.youtube_url
